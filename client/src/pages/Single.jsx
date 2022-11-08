@@ -7,6 +7,7 @@ import Edit from '../img/edit.png';
 import Delete from '../img/delete.png';
 import Menu from "../components/Menu";
 import {AuthContext} from "../context/authContext";
+import DOMPurify from "dompurify";
 
 const Single = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Single = () => {
           </div>
           {currentUser.username === post.username && (
             <div className="edit">
-              <Link to={`/write?edit=2`}>
+              <Link to={`/write?edit=2`} state={post}>
                 <img src={Edit} alt="Edit"/>
               </Link>
               <img src={Delete} alt="Delete" onClick={handleDelete}/>
@@ -65,7 +66,11 @@ const Single = () => {
         <h1>
           {post.title} ads
         </h1>
-        {post.desc}
+        <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(post.desc),
+          }}
+        ></p>
       </div>
       <Menu cat={post.cat}/>
     </div>
